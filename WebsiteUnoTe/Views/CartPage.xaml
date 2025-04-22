@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:WebsiteUnoTe.ViewModels"
+             x:Class="WebsiteUnoTe.Views.CartPage"
+             Title="Shopping Cart">
+    <ContentPage.BindingContext>
+        <viewmodel:CartViewModel />
+    </ContentPage.BindingContext>
+    <Grid RowDefinitions="Auto,Auto,Auto,*,Auto,Auto,Auto" Padding="10">
+        <VerticalStackLayout Grid.Row="0" Spacing="10" Margin="0,0,0,10">
+            <Label Text="Select Cart:" />
+            <Picker ItemsSource="{Binding Carts}" 
+                    SelectedItem="{Binding ActiveCart}" 
+                    ItemDisplayBinding="{Binding Name}" />
+            <HorizontalStackLayout Spacing="5">
+                <Entry Placeholder="New Cart Name" Text="{Binding NewCartName}" WidthRequest="200" />
+                <Button Text="Create New Cart" Command="{Binding CreateNewCartCommand}" />
+                <Button Text="Delete Cart" 
+                        Command="{Binding DeleteCartCommand}" 
+                        CommandParameter="{Binding ActiveCart}" 
+                        IsEnabled="{Binding CanDeleteCart}" />
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+
+        <VerticalStackLayout Grid.Row="1" Spacing="10" Margin="0,0,0,10">
+            <Label Text="Add to Cart" FontSize="Large" />
+            <Picker Title="Select a Product" 
+                    ItemsSource="{Binding InventoryProducts}" 
+                    ItemDisplayBinding="{Binding Display}" 
+                    SelectedItem="{Binding SelectedProduct}" />
+            <Entry Placeholder="Quantity" Text="{Binding Quantity}" Keyboard="Numeric" />
+            <Button Text="Add to Cart" Command="{Binding AddToCartCommand}" />
+        </VerticalStackLayout>
+
+        <HorizontalStackLayout Grid.Row="2" Spacing="10" Margin="0,0,0,10">
+            <Label Text="Sort by:" VerticalOptions="Center" />
+            <Picker SelectedIndex="{Binding SortOption}" WidthRequest="120">
+                <Picker.Items>
+                    <x:String>ID</x:String>
+                    <x:String>Name</x:String>
+                    <x:String>Price</x:String>
+                </Picker.Items>
+            </Picker>
+            <CheckBox IsChecked="{Binding SortDescending}" />
+            <Label Text="Descending" VerticalOptions="Center" />
+        </HorizontalStackLayout>
+
+        <Grid Grid.Row="3" RowDefinitions="Auto,*">
+            <Label Text="{Binding ActiveCart.Name, StringFormat='Items in {0}:'}" FontAttributes="Bold" Grid.Row="0" />
+            <CollectionView Grid.Row="1" 
+                          ItemsSource="{Binding SortedCartItems}" 
+                          SelectedItem="{Binding SelectedCartItem}" 
+                          SelectionMode="Single">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid ColumnDefinitions="*,Auto,Auto,Auto" Padding="10" Margin="0,5">
+                            <Label Text="{Binding Name}" Grid.Column="0" VerticalOptions="Center" />
+                            <Label Text="{Binding Quantity, StringFormat='{0} x'}" Grid.Column="1" VerticalOptions="Center" Margin="5,0" />
+                            <Label Text="{Binding Price, StringFormat='${0:F2}'}" Grid.Column="2" VerticalOptions="Center" />
+                            <Label Text="{Binding Total, StringFormat='= ${0:F2}'}" 
+                                Grid.Column="3" VerticalOptions="Center" Margin="5,0" />
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+                <CollectionView.EmptyView>
+                    <Label Text="No items in this cart" HorizontalOptions="Center" VerticalOptions="Center" />
+                </CollectionView.EmptyView>
+            </CollectionView>
+        </Grid>
+
+        <VerticalStackLayout Grid.Row="4" Spacing="10" Margin="0,10,0,10">
+            <Label Text="Update Selected Cart Item" />
+            <HorizontalStackLayout>
+                <Entry Placeholder="New Quantity" Text="{Binding Quantity}" Keyboard="Numeric" WidthRequest="100" />
+                <Button Text="Update" Command="{Binding UpdateCartCommand}" Margin="5,0" />
+                <Button Text="Remove" Command="{Binding RemoveFromCartCommand}" />
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+
+        <VerticalStackLayout Grid.Row="5" Spacing="10" Margin="0,0,0,10" IsVisible="{Binding HasSelectedCartItem}">
+            <Label Text="Move selected item to:" />
+            <HorizontalStackLayout>
+                <Picker ItemsSource="{Binding OtherCarts}" 
+                        SelectedItem="{Binding SelectedTargetCart}" 
+                        ItemDisplayBinding="{Binding Name}" 
+                        WidthRequest="200" />
+                <Button Text="Move Item" 
+                        Command="{Binding MoveToCartCommand}" 
+                        CommandParameter="{Binding SelectedTargetCart}" />
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+
+        <VerticalStackLayout Grid.Row="6" Spacing="10">
+            <HorizontalStackLayout HorizontalOptions="End">
+                <Label Text="Subtotal: $" />
+                <Label Text="{Binding Subtotal, StringFormat='{0:F2}'}" />
+            </HorizontalStackLayout>
+            <HorizontalStackLayout HorizontalOptions="End">
+                <Label Text="{Binding TaxRateFormatted}" />
+                <Label Text="{Binding Tax, StringFormat='${0:F2}'}" />
+            </HorizontalStackLayout>
+            <HorizontalStackLayout HorizontalOptions="End">
+                <Label Text="Total: $" FontAttributes="Bold" />
+                <Label Text="{Binding Total, StringFormat='{0:F2}'}" FontAttributes="Bold" />
+            </HorizontalStackLayout>
+            <HorizontalStackLayout Spacing="10">
+                <Button Text="Back to Inventory" Command="{Binding GoToInventoryCommand}" />
+                <Button Text="Checkout" 
+                        Command="{Binding CheckoutCommand}" 
+                        IsEnabled="{Binding CanCheckout}" />
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+    </Grid>
+</ContentPage>

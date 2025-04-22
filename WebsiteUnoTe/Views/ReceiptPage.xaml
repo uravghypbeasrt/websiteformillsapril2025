@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:WebsiteUnoTe.ViewModels"
+             x:Class="WebsiteUnoTe.Views.ReceiptPage"
+             Title="Receipt">
+    <VerticalStackLayout Padding="20" Spacing="10">
+        <Label Text="RECEIPT" FontSize="Large" FontAttributes="Bold" HorizontalOptions="Center" />
+        <Label Text="Thank you for your purchase!" HorizontalOptions="Center" />
+        <BoxView HeightRequest="1" Color="Gray" Margin="0,10" />
+        <ListView ItemsSource="{Binding ReceiptItems}" HeightRequest="300">
+            <ListView.Header>
+                <Grid ColumnDefinitions="*,Auto,Auto,Auto" Padding="5">
+                    <Label Text="Item" Grid.Column="0" FontAttributes="Bold" />
+                    <Label Text="Qty" Grid.Column="1" FontAttributes="Bold" />
+                    <Label Text="Price" Grid.Column="2" FontAttributes="Bold" />
+                    <Label Text="Total" Grid.Column="3" FontAttributes="Bold" />
+                </Grid>
+            </ListView.Header>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid ColumnDefinitions="*,Auto,Auto,Auto" Padding="5">
+                            <Label Text="{Binding Name}" Grid.Column="0" VerticalOptions="Center" />
+                            <Label Text="{Binding Quantity}" Grid.Column="1" HorizontalOptions="End" VerticalOptions="Center" />
+                            <Label Text="{Binding Price, StringFormat='${0:F2}'}" Grid.Column="2" HorizontalOptions="End" VerticalOptions="Center" />
+                            <Label Text="{Binding Total, StringFormat='${0:F2}'}" Grid.Column="3" HorizontalOptions="End" VerticalOptions="Center" />
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <BoxView HeightRequest="1" Color="Gray" Margin="0,10" />
+        <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto,Auto">
+            <Label Text="Subtotal:" Grid.Row="0" Grid.Column="0" HorizontalOptions="End" />
+            <Label Text="{Binding Subtotal, StringFormat='${0:F2}'}" Grid.Row="0" Grid.Column="1" HorizontalOptions="End" />
+            <Label Text="{Binding TaxRateDisplay, StringFormat='Tax ({0}):'}" Grid.Row="1" Grid.Column="0" HorizontalOptions="End" />
+            <Label Text="{Binding Tax, StringFormat='${0:F2}'}" Grid.Row="1" Grid.Column="1" HorizontalOptions="End" />
+            <Label Text="Total:" Grid.Row="2" Grid.Column="0" HorizontalOptions="End" FontAttributes="Bold" />
+            <Label Text="{Binding Total, StringFormat='${0:F2}'}" Grid.Row="2" Grid.Column="1" HorizontalOptions="End" FontAttributes="Bold" />
+        </Grid>
+        <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Spacing="10" Margin="0,20,0,0">
+            <Button Text="Finish Shopping" Command="{Binding FinishCommand}" />
+            <Button Text="Save For Later" Command="{Binding SaveForLaterCommand}" />
+        </StackLayout>
+    </VerticalStackLayout>
+</ContentPage>

@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:WebsiteUnoTe.ViewModels"
+             x:Class="WebsiteUnoTe.Views.SettingsPage"
+             Title="Settings">
+	<ContentPage.BindingContext>
+		<viewmodel:SettingsViewModel />
+	</ContentPage.BindingContext>
+	<VerticalStackLayout Padding="20" Spacing="20" VerticalOptions="Center">
+		<Label Text="Application Settings" FontSize="Large" FontAttributes="Bold" HorizontalOptions="Center" />
+
+		<Frame BorderColor="Gray" Padding="20" Margin="0,20">
+			<VerticalStackLayout Spacing="15">
+				<Label Text="Tax Rate Configuration" FontAttributes="Bold" FontSize="Medium" />
+				<Label Text="Current tax rate is:" />
+				<Label Text="{Binding TaxRateDisplay}" FontSize="Large" HorizontalOptions="Center" />
+
+				<Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto">
+					<Entry Grid.Column="0"
+                           Text="{Binding TaxRateText}"
+                           Keyboard="Numeric"
+                           Placeholder="Enter percentage (e.g. 7.5)" />
+					<Label Grid.Column="1"
+                           Text="%"
+                           VerticalOptions="Center" />
+				</Grid>
+
+				<Button Text="Save Tax Rate" Command="{Binding SaveSettingsCommand}" />
+
+				<Label Text="This tax rate will be applied to all purchases."
+                       FontSize="Small"
+                       TextColor="Gray" />
+			</VerticalStackLayout>
+		</Frame>
+
+		<Button Text="Return to Inventory" Command="{Binding GoBackCommand}" />
+	</VerticalStackLayout>
+</ContentPage>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="WebsiteUnoTe.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:WebsiteUnoTe"
+    xmlns:views="clr-namespace:WebsiteUnoTe.Views"
+    Shell.FlyoutBehavior="Flyout"
+    Title="WebsiteUnoTe">
+
+    <ShellContent
+        Title="Inventory"
+        ContentTemplate="{DataTemplate views:InventoryPage}"
+        Route="inventory" />
+
+    <ShellContent
+        Title="Cart"
+        ContentTemplate="{DataTemplate views:CartPage}"
+        Route="cart" />
+
+    <ShellContent
+        Title="Receipt"
+        ContentTemplate="{DataTemplate views:ReceiptPage}"
+        Route="receipt" />
+</Shell>

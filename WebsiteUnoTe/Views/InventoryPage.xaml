@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:WebsiteUnoTe.ViewModels"
+             x:Class="WebsiteUnoTe.Views.InventoryPage"
+             Title="Inventory Management">
+    <ContentPage.BindingContext>
+        <viewmodel:InventoryViewModel />
+    </ContentPage.BindingContext>
+    <Grid RowDefinitions="Auto,Auto,*,Auto" Padding="10">
+        <VerticalStackLayout Grid.Row="0" Spacing="10" Margin="0,0,0,10">
+            <Label Text="Add/Update Product" FontSize="Large" />
+            <Entry Placeholder="Product Name" Text="{Binding ProductName}" />
+            <Entry Placeholder="Price" Text="{Binding ProductPrice}" Keyboard="Numeric" />
+            <Entry Placeholder="Quantity" Text="{Binding ProductQuantity}" Keyboard="Numeric" />
+            <HorizontalStackLayout Spacing="5">
+                <Button Text="Add" Command="{Binding AddProductCommand}" Margin="0,0,5,0" />
+                <Button Text="Update" Command="{Binding UpdateProductCommand}" Margin="0,0,5,0" />
+                <Button Text="Delete" Command="{Binding DeleteProductCommand}" />
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+        <HorizontalStackLayout Grid.Row="1" Spacing="10" Margin="0,0,0,10">
+            <Label Text="Sort by:" VerticalOptions="Center" />
+            <Picker SelectedIndex="{Binding SortOption}" WidthRequest="120">
+                <Picker.Items>
+                    <x:String>ID</x:String>
+                    <x:String>Name</x:String>
+                    <x:String>Price</x:String>
+                </Picker.Items>
+            </Picker>
+            <CheckBox IsChecked="{Binding SortDescending}" />
+            <Label Text="Descending" VerticalOptions="Center" />
+        </HorizontalStackLayout>
+        <CollectionView Grid.Row="2" 
+                      ItemsSource="{Binding SortedProducts}" 
+                      SelectedItem="{Binding SelectedProduct}" 
+                      SelectionMode="Single">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid ColumnDefinitions="*,Auto,Auto,Auto" Padding="10" Margin="0,5">
+                        <Label Text="{Binding Display}" VerticalOptions="Center" Grid.Column="0" />
+                        <Label Text="{Binding Price, StringFormat='${0:F2}'}" VerticalOptions="Center" Grid.Column="1" Margin="5,0" />
+                        <Entry Text="{Binding TempQuantity}" Keyboard="Numeric" WidthRequest="50" Grid.Column="2" />
+                        <Button Text="+" 
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:InventoryViewModel}}, Path=QuickAddToCartCommand}" 
+                                CommandParameter="{Binding .}" 
+                                Grid.Column="3" 
+                                WidthRequest="40" 
+                                HeightRequest="40" />
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        <HorizontalStackLayout Grid.Row="3" Spacing="10" Margin="0,10,0,0">
+            <Button Text="Go to Shopping Cart" Command="{Binding GoToCartCommand}" />
+            <Button Text="Settings" Command="{Binding ConfigureTaxCommand}" />
+        </HorizontalStackLayout>
+    </Grid>
+</ContentPage>
